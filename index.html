@@ -1,0 +1,116 @@
+<!doctype html>
+<html ng-app="driveDeliver" ng-controller="ApplicationController">
+<head>
+	<meta charset="UTF-8">
+	<title>Drive Deliver</title>
+
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="vendor/fontawesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="vendor/ionicons/css/ionicons.min.css">
+	<link rel="stylesheet" href="vendor/datatables/media/css/jquery.dataTables.css">
+	<link rel="stylesheet" href="dist/main.css">
+
+</head>
+<body class="skin-blue">
+	<h1 class="header">Drive Deliver</h1>
+	<div class="wrapper">
+		<div class="row">
+			<div class="col-lg-8 col-lg-offset-2">
+				<div class="alert alert-danger" ng-show="error.length > 0">{{ error }}</div>
+			</div>
+		</div>
+		<div class="row" ng-show="step == 0">
+			<div class="col-lg-8 col-lg-offset-2">
+				<div class="row">
+					<div class="col-lg-12">
+						<input type="text" ng-model="code">
+					</div>
+				</div>
+				<div class="row">
+					<div class="pad col-lg-4" ng-click="numpad(1)">1</div>
+					<div class="pad col-lg-4" ng-click="numpad(2)">2</div>
+					<div class="pad col-lg-4" ng-click="numpad(3)">3</div>
+				</div>
+				<div class="row">
+					<div class="pad col-lg-4" ng-click="numpad(4)">4</div>
+					<div class="pad col-lg-4" ng-click="numpad(5)">5</div>
+					<div class="pad col-lg-4" ng-click="numpad(6)">6</div>
+				</div>
+				<div class="row">
+					<div class="pad col-lg-4" ng-click="numpad(7)">7</div>
+					<div class="pad col-lg-4" ng-click="numpad(8)">8</div>
+					<div class="pad col-lg-4" ng-click="numpad(9)">9</div>
+				</div>
+			</div>
+		</div>
+		<div ng-show="order && step == 1" class="row">
+			<div class="col-lg-8 col-lg-offset-2">
+				<h2>Commande n°{{ order.reference }}</h2><br />
+				<div ng-show="warningLines.length > 0 && (! order.canceled && ! order.delivered)">
+				<p>Bonjour {{ order.customer.firstname }} {{ order.customer.lastname }},</p>
+					<p>
+						Votre commande n'a pas pu être préparé entièrement.<br />
+						Voici la liste des produits manquants à votre commande :
+					</p>
+
+					<table class="table">
+						<tr>
+							<th>Produit</th>
+							<th>Quantité demandée</th>
+							<th>Quantité disponible</th>
+						</tr>
+						<tr ng-repeat="line in warningLines">
+							<td>{{ line.product_state.name }}</td>
+							<td class="success">{{ line.quantity }}</td>
+							<td class="danger">{{ line.availableQuantity }}</td>
+						</tr>
+					</table><br />
+
+					<hr>
+
+					<p><strong>Si vous voulez quand même retirer la commande avec ses produits manquants, merci de cliquer sur le bouton suivant sinon vous pouvez annuler le retrait.</strong></p><br /><br />
+
+					<button class="btn btn-danger btn-lg pull-left" ng-click="cancel()">Annnuler le retrait</button>
+					<button class="btn btn-success btn-lg pull-right" ng-click="next()">Suivant</button>
+				</div>
+				<div ng-show="warningLines.length == 0 && !order.delivered">
+					<p>Le total de votre commande s'élève à <strong>{{ order.total }} euros.</strong></p><br /><br />
+
+					<p>Veuillez insérer votre carte bancaire dans le terminal.</p><br />
+
+					<button class="btn btn-primary" ng-click="valid()">Carte bancaire OK</button>
+				</div>
+				<div ng-show="order.delivered && place">
+					<h3>Merci, c'est terminé !</h3>
+					<strong>Veuillez vous garer sur la place n°{{ place }}.</strong>
+				</div>
+			</div>
+		</div>
+		<div class="row" ng-show="order && step == 1 && (order.canceled || order.delivered) && ! place">
+			<div class="col-lg-8 col-lg-offset-2">
+				<div class="alert alert-danger">
+					Votre code a été annulée ou déjà retirée.
+				</div><br />
+
+				<a href="#/" class="btn btn-primary" ng-click="restart()"><span class="fa fa-chevron-left"></span> Retour</a>
+			</div>
+		</div>
+	</div><!-- ./wrapper -->
+
+	<!-- Javascripts -->
+	<script src="vendor/lodash/dist/lodash.min.js"></script>
+	<script src="vendor/jquery/dist/jquery.min.js"></script>
+	<script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="vendor/angular/angular.js"></script>
+	<script src="vendor/angular-route/angular-route.min.js"></script>
+	<script src="vendor/restangular/dist/restangular.min.js"></script>
+	<script src="vendor/datatables/media/js/jquery.dataTables.js"></script>
+
+	<!-- App -->
+	<script src="conf.js"></script>
+	<script src="dist/app.js"></script>
+</body>
+</html>

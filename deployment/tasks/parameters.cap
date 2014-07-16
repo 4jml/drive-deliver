@@ -1,0 +1,12 @@
+namespace :radian do
+	desc 'Install parameters.yml'
+	task :parameters do
+		on roles(:web) do
+			if test("[ -f #{shared_path}/conf.js ]")
+				info "configuration already exists on server!"
+			else
+				upload! "conf.js", "#{shared_path}/conf.js"
+			end
+		end
+	end
+end

@@ -1,0 +1,22 @@
+{
+  "name": "stock-manager",
+  "repository": {
+    "type": "git",
+    "url": "git@git.delormejonathan.fr:csia-4jml/drive-manager.git"
+  },
+  "author": "4JML",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp-rename": "^1.2.0",
+    "gulp-plumber": "^0.6.1",
+    "gulp": "^3.6.1",
+    "gulp-less": "^1.2.3",
+    "bower": "^1.3.2",
+    "gulp-concat": "~2.2.0"
+  },
+  "scripts": {
+    "install": "bower install --config.interactive=false",
+    "build": "gulp",
+    "watch": "gulp watch"
+  }
+}

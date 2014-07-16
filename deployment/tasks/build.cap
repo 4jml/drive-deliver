@@ -1,0 +1,8 @@
+namespace :npm do
+	desc 'Running npm installations'
+	task :build do
+		on roles(:app) do
+			execute "cd #{release_path} && npm install && npm run build"
+		end
+	end
+end
