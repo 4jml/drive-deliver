@@ -49,7 +49,7 @@
 		<div ng-show="order && step == 1" class="row">
 			<div class="col-lg-8 col-lg-offset-2">
 				<h2>Commande n°{{ order.reference }}</h2><br />
-				<div ng-show="warningLines.length > 0 && (! order.canceled && ! order.delivered)">
+				<div ng-show="warningLines.length > 0 && (order.canceled == 0 && order.delivered == 0)">
 				<p>Bonjour {{ order.customer.firstname }} {{ order.customer.lastname }},</p>
 					<p>
 						Votre commande n'a pas pu être préparé entièrement.<br />
@@ -76,7 +76,7 @@
 					<button class="btn btn-danger btn-lg pull-left" ng-click="cancel()">Annnuler le retrait</button>
 					<button class="btn btn-success btn-lg pull-right" ng-click="next()">Suivant</button>
 				</div>
-				<div ng-show="warningLines.length == 0 && !order.delivered">
+				<div ng-show="warningLines.length == 0 && order.delivered == 0">
 					<p>Le total de votre commande s'élève à <strong>{{ order.total }} euros.</strong></p><br /><br />
 
 					<p>Veuillez insérer votre carte bancaire dans le terminal.</p><br />
@@ -89,7 +89,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row" ng-show="order && step == 1 && (order.canceled || order.delivered) && ! place">
+		<div class="row" ng-show="order && step == 1 && (order.canceled == 1 || order.delivered == 1) && ! place">
 			<div class="col-lg-8 col-lg-offset-2">
 				<div class="alert alert-danger">
 					Votre code a été annulée ou déjà retirée.
